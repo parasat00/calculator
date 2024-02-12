@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="style.css">
+ <!-- Icon vvv -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+ <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
+
+ <title>Calculator</title>
+</head>
+<body>
+ <div id="calc" class="calc">
+  <div class="calc__output" v-html="output"></div>
+  <div class="calc__temp">{{ temp_output }}</div>
+  <div class="calc__header">
+   <i class="fa fa-clock-o" aria-hidden="true"></i>
+   <i class="fas fa-backspace special" @click="backspace"></i>
+  </div>
+
+  <div class="calc__btns">
+   <div class="calc__btns-item c" @click="clear">C</div>
+   <div class="calc__btns-item special" data-val="()"><strong>( )</strong></div>
+   <div class="calc__btns-item special" data-val="%"><strong>%</strong></div>
+   <div class="calc__btns-item special" data-val="/" @click="typeOperation"><i class="fas fa-divide"></i></div>
+   <div class="calc__btns-item" data-val="7" @click="type">7</div>
+   <div class="calc__btns-item" data-val="8" @click="type">8</div>
+   <div class="calc__btns-item" data-val="9" @click="type">9</div>
+   <div class="calc__btns-item special" data-val="*" @click="typeOperation"><i class="fa fa-times"></i></div>
+   <div class="calc__btns-item" data-val="4" @click="type">4</div>
+   <div class="calc__btns-item" data-val="5" @click="type">5</div>
+   <div class="calc__btns-item" data-val="6" @click="type">6</div>
+   <div class="calc__btns-item special" data-val="-" @click="typeOperation"><i class="fa fa-minus" aria-hidden="true"></i></div>
+   <div class="calc__btns-item" data-val="1" @click="type">1</div>
+   <div class="calc__btns-item" data-val="2" @click="type">2</div>
+   <div class="calc__btns-item" data-val="3" @click="type">3</div>
+   <div class="calc__btns-item special" data-val="+" @click="typeOperation"><i class="fa fa-plus" aria-hidden="true"></i></div>
+   <div class="calc__btns-item" data-val="+-">+/-</div>
+   <div class="calc__btns-item" data-val="0" @click="type">0</div>
+   <div class="calc__btns-item" data-val=".">.</div>
+   <div class="calc__btns-item equal" data-val="=" @click="equal"><strong>=</strong></div>
+  </div>
+ </div>
+
+ <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ <script src="index.js"></script>
+</body>
+</html>

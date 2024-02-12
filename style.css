@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+:root {
+ --text-color: #fff;
+ --special-text: #6dd23d;
+ --grey-text: #a5a5a5;
+}
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+body {
+ display: grid;
+ place-items: center;
+ background-color: rgb(18, 18, 18, 0.5);
+ font-family: 'Roboto', sans-serif;
+ height: 100vh;
+}
+#calc {
+ border-radius: 15px;
+ border: 1px solid grey;
+ padding: 50px 20px 20px;
+ background-color: #010101;
+ color: #fff;
+ width: 350px;
+ box-sizing: border-box;
+}
+.calc__output { 
+ font-size: 2rem;
+ height: 96px;
+ /* overflow-y: auto; */
+ display: flex;
+ justify-content: flex-end;
+ flex-wrap: wrap;
+}
+.calc__output, 
+.calc__temp {
+ width: 100%;
+ text-align: right;
+ margin-left: auto;
+}
+.calc__temp {
+ color: var(--grey-text);
+ font-size: 1.5rem;
+ height: 30px;
+}
+.calc__header {
+ margin: 30px 0 20px;
+ padding: 0 15px 15px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ color: var(--grey-text);
+ border-bottom: 1px solid rgba(165, 165, 165, 0.5);
+}
+.calc__header i {
+ cursor: pointer;
+}
+.calc__btns {
+ display: grid;
+ grid-template-columns: repeat(4, 62px);
+ grid-template-rows: repeat(5, 62px);
+ column-gap: 20px;
+ row-gap: 10px;
+}
+.calc__btns-item {
+ display: grid;
+ place-items: center;
+ background-color: #171717;
+ border-radius: 50%;
+ cursor: pointer;
+ font-size: 1.8rem;
+}
+.calc__btns-item strong,
+.calc__btns-item i {
+ pointer-events: none;
+}
+.calc__btns-item.special {
+ font-size: 1.5rem;
+}
+.calc__btns-item.c {
+ color: #f86960;
+}
+.calc__btns-item.equal {
+ font-size: 2.5rem;
+ background-color: #308606;
+}
+.special {
+ color: var(--special-text);
+}
