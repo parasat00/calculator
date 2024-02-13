@@ -7,14 +7,15 @@ createApp({
    input: '',
    num: '',
    dot: false,
-   temp_output: ''
+   temp_output: '',
+   bracketStack: []
   }
  },
  methods: {
   temp_output_toggle() {
    last = this.input.charAt(this.input.length-1);
 
-   if(!!this.input.match("[+-/*]") && !"*/+-".includes(last)) {
+   if(!!this.input.match("[+-/*]") && !"*/+-".includes(last) && this.bracketStack.length === 0) {
     this.temp_output = eval(this.input);
    }
    else {
@@ -26,28 +27,31 @@ createApp({
    this.input = '';
    this.temp_output = '';
    this.num = '';
+   this.bracketStack = [];
   },
   type(e) {
    val = e.target.dataset.val;
-   if(this.num.length < 15) {
-    this.num += val;
-    this.output += val;
-    this.input += val;
+
+   if(!this.num.includes('.')) {
+     if(this.num.length < 15) {
+     this.num += val;
+     this.output += val;
+     this.input += val;
+    }
+   } else {
+    dotIndex = this.num.indexOf('.');
+
+    if(this.num.length < 16 && this.num.length - dotIndex < 11) {
+     this.num += val;
+     this.output += val;
+     this.input += val;
+    }
    }
+   
+
    this.temp_output_toggle();
   },
-  typeOperation(e) {
-   if(!this.input) { return }
-
-   val = e.target.dataset.val;
-
-   last = this.input.charAt(this.input.length-1);
-
-   if("*/+-".includes(last)) {
-    this.input = this.input.slice(0, -1);
-    this.output = this.output.slice(0, -30);
-   }
-
+  typeOperator(val) {
    this.output += this.num.length === 15 ? ' ' : '';
 
    if(val === '*') {
@@ -63,8 +67,28 @@ createApp({
    this.num = '';
 
    this.input += val;
+  },
+  typeOperation(e) {
+   last = this.input.charAt(this.input.length-1);
+   val = e.target.dataset.val;
+
+   if(!this.input) { return }
+   else if(last === "(" && "*/".includes(val)) { return }
+
+   if("*/+-".includes(last)) {
+    if(this.input.charAt(this.input.length-2) === "(" && "*/".includes(val)) { return }
+    this.input = this.input.slice(0, -1);
+    this.output = this.output.slice(0, -30);
+   }
+
+   this.typeOperator(val);
 
    this.temp_output_toggle();
+  },
+  redefineNum() {
+   reverse_input=this.input.split("").reverse().join("");
+   beginning = reverse_input.match("[+-/*]").index;
+   this.num = this.input.slice(-beginning);
   },
   backspace() {
    last = this.input.charAt(this.input.length-1);
@@ -79,15 +103,32 @@ createApp({
     this.output = this.input.charAt(this.input.length-31) === ' ' ? this.output.slice(0, -31) : this.output.slice(0, -30);
 
     if(!!this.input.match("[+-/*]")) {
-     reverse_input=this.input.split("").reverse().join("");
-     begging = reverse_input.match("[+-/*]").index;
-     this.num = this.input.slice(-begging);
+     this.redefineNum();
     }
     else {
      this.num = this.input;
     }
    }
    this.temp_output_toggle();
+  },
+  typeDot(){
+   last = this.input.charAt(this.input.length - 1);
+   if(last === ')') {
+    this.typeOperator("*");
+    this.input += '0.';
+    this.num += '0.';
+    this.output += '0.';
+   }
+   else if(this.input === '' || last === '(') {
+    this.input += '0.';
+    this.num += '0.';
+    this.output += '0.';
+   }
+   else if(this.num.length < 15 && !this.num.includes('.') && !"*/+-".includes(this.num.charAt(this.num.length - 1))) {
+    this.input += '.';
+    this.num += '.';
+    this.output += '.';
+   }
   },
   equal() {
    if(!this.temp_output) { return }
@@ -96,6 +137,29 @@ createApp({
    this.input = this.temp_output + '';
    this.num = this.temp_output + '';
    this.temp_output = '';
+  },
+  typeBrackets() {
+   last = this.input.charAt(this.input.length - 1);
+   if("+-/*".includes(last) || last === '(') {
+    this.bracketStack.push("(");
+    this.input += "(";
+    this.output += "(";
+    // this.num += "(";
+   }
+   else {
+    if(this.bracketStack.length > 0) {
+     this.bracketStack.pop();
+     this.input += ")";
+     this.output += ")";
+    }else {
+     this.typeOperator("*");
+     this.bracketStack.push("(");
+     this.input += "(";
+     this.output += "(";
+    }
+   }
+   this.temp_output_toggle();
+   return;
   }
  }
 }).mount('#calc');

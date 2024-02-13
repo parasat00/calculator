@@ -24,7 +24,7 @@
 
   <div class="calc__btns">
    <div class="calc__btns-item c" @click="clear">C</div>
-   <div class="calc__btns-item special" data-val="()"><strong>( )</strong></div>
+   <div class="calc__btns-item special" @click="typeBrackets"><strong>( )</strong></div>
    <div class="calc__btns-item special" data-val="%"><strong>%</strong></div>
    <div class="calc__btns-item special" data-val="/" @click="typeOperation"><i class="fas fa-divide"></i></div>
    <div class="calc__btns-item" data-val="7" @click="type">7</div>
@@ -41,7 +41,7 @@
    <div class="calc__btns-item special" data-val="+" @click="typeOperation"><i class="fa fa-plus" aria-hidden="true"></i></div>
    <div class="calc__btns-item" data-val="+-">+/-</div>
    <div class="calc__btns-item" data-val="0" @click="type">0</div>
-   <div class="calc__btns-item" data-val=".">.</div>
+   <div class="calc__btns-item" @click="typeDot">.</div>
    <div class="calc__btns-item equal" data-val="=" @click="equal"><strong>=</strong></div>
   </div>
  </div>
