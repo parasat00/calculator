@@ -28,7 +28,7 @@ body {
 .calc__output { 
  font-size: 2rem;
  height: 96px;
- /* overflow-y: auto; */
+ overflow: auto;
  display: flex;
  justify-content: flex-end;
  flex-wrap: wrap;
@@ -87,4 +87,23 @@ body {
 }
 .special {
  color: var(--special-text);
+}
+
+@media only screen and (max-width: 370px) {
+ :root {
+  --item: 55px;
+ }
+ body {
+  height: 100lvh;
+ }
+ #calc {
+  width: 100%;
+  padding: 50px 15px 20px;
+ }
+ .calc__btns {
+  grid-template-columns: repeat(4, var(--item));
+  grid-template-rows: repeat(4, var(--item));
+  column-gap: calc((100% - var(--item) * 4) / 3);
+  height: calc(var(--item) * 5 + 10px * 4);
+ }
 }

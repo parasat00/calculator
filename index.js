@@ -97,6 +97,7 @@ createApp({
     this.input = this.input.slice(0, -1);
     this.output = this.output.slice(0, -1);
     this.num = this.num.slice(0, -1);
+
    }
    else {
     this.input = this.input.slice(0, -1);
@@ -109,6 +110,14 @@ createApp({
      this.num = this.input;
     }
    }
+
+   if(this.input.match(/\(/g) || this.input.match(/\)/g)) {
+      let begins = this.input.match(/\(/g);
+      let ends = this.input.match(/\)/g) || [];
+
+      this.bracketStack = Array(begins.length - ends.length).fill("(");
+   }
+
    this.temp_output_toggle();
   },
   typeDot(){
