@@ -94,7 +94,7 @@ body {
   --item: 55px;
  }
  body {
-  height: 100lvh;
+  height: 100dvh;
  }
  #calc {
   width: 100%;
