@@ -99,6 +99,10 @@ createApp({
     this.num = this.num.slice(0, -1);
 
    }
+   else if(last === "-" && this.input.charAt(this.input.length-2) === "(") {
+    this.input = this.input.slice(0, -1);
+    this.output = this.output.slice(0, -1);
+   }
    else {
     this.input = this.input.slice(0, -1);
     this.output = this.input.charAt(this.input.length-31) === ' ' ? this.output.slice(0, -31) : this.output.slice(0, -30);
@@ -169,6 +173,49 @@ createApp({
    }
    this.temp_output_toggle();
    return;
+  },
+  plusMinus() {
+    last = this.input.charAt(this.input.length - 1);
+    if(")" === last) {
+      this.typeOperator("*");
+      last = this.input.charAt(this.input.length - 1);
+    }
+    // if last element is operator and element before is not (
+    if("+-/*".includes(last) && this.input.charAt(this.input.length - 2) !== "(") {
+      this.bracketStack.push("(");
+      this.input += "(-";
+      this.output += "(-";
+    }
+    else {
+      if(!this.input.match("[+-/*]")) {
+        this.bracketStack.push("(");
+        this.input = "(-" + this.input;
+        this.output = "(-" + this.output;
+      } 
+      else {
+        reverse_input=this.input.split("").reverse().join("");
+        beginning = reverse_input.match("[+-/*]").index;
+
+        if(this.input.slice(-beginning-2, -beginning) === "(-") {
+          temp_input = this.input;
+          this.input = temp_input.slice(0, -beginning-2) + temp_input.slice(-beginning);
+          this.output = this.output.slice(0, -beginning-2) + this.output.slice(-beginning);
+          this.bracketStack.pop();
+        }
+        else if(this.input.slice(-2) === "(-") {
+          this.input = this.input.slice(0, -2);
+          this.output = this.output.slice(0, -2);
+          this.bracketStack.pop();
+        }
+        else {
+          temp_input = this.input;
+          this.input = temp_input.slice(0, -beginning) + "(-" + temp_input.slice(-beginning);
+          this.output = this.output.slice(0, -beginning) + "(-" + this.output.slice(-beginning);
+          this.bracketStack.push("(");
+        }
+      }
+    }
+    this.temp_output_toggle();
   }
  }
 }).mount('#calc');
