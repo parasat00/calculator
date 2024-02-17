@@ -8,7 +8,18 @@ createApp({
    num: '',
    dot: false,
    temp_output: '',
-   bracketStack: []
+   bracketStack: [],
+   history: [],
+   show_history: false,
+  }
+ },
+ watch: {
+  output() {
+    output_container = this.$refs.output_container;
+    
+    if(output_container.clientHeight > 96) {
+      output_container.parentNode.scrollTo(0, output_container.clientHeight);
+    }
   }
  },
  methods: {
@@ -146,9 +157,14 @@ createApp({
   equal() {
    if(!this.temp_output) { return }
 
-   this.output = this.temp_output + '';
-   this.input = this.temp_output + '';
-   this.num = this.temp_output + '';
+   temp = this.temp_output + '';
+
+   history_item = { input : this.output, output : temp };
+   this.history.push(history_item);
+
+   this.output = temp;
+   this.input = temp;
+   this.num = temp;
    this.temp_output = '';
   },
   typeBrackets() {
@@ -216,6 +232,21 @@ createApp({
       }
     }
     this.temp_output_toggle();
+    return;
+  },
+  clear_history() {
+    this.history = [];
+    setTimeout(this.show_history = false, 1000);
+  },
+  display_history(e) {
+    history_box = this.$refs.history_box;
+    history_box.scrollTop = history_box.scrollHeight;
+    
+    if(!e.target.className.includes("active")) { return }
+    
+    this.show_history = !this.show_history;
+
+    return;
   }
  }
 }).mount('#calc');

@@ -15,14 +15,28 @@
 </head>
 <body>
  <div id="calc" class="calc">
-  <div class="calc__output" v-html="output"></div>
+  <div class="calc__output">
+   <div class="calc__output-content" v-html="output" ref="output_container"></div>
+  </div>
   <div class="calc__temp">{{ temp_output }}</div>
   <div class="calc__header">
-   <i class="fa fa-clock-o" aria-hidden="true"></i>
+   <i :class="['fa fa-clock-o', { 'active' : history.length > 0 }]" aria-hidden="true" @click="display_history"></i>
    <i class="fas fa-backspace special" @click="backspace"></i>
   </div>
 
   <div class="calc__btns">
+   <div class="calc__btns-history" v-show="show_history">
+    <div class="calc__btns-history-slide" ref="history_box">
+     <div class="calc__btns-history-slide-item" v-for="equation in history">
+      <div class="calc__btns-history-slide-item-equation" v-html="equation.input"></div>
+      <span class="calc__btns-history-slide-item-solution special">={{ equation.output }}</span>
+     </div>
+    </div>
+    <div class="calc__btns-history-clear">
+     <button @click="clear_history" class="calc__btns-history-clear-btn">Clear history</button>
+    </div>
+   </div>
+
    <div class="calc__btns-item c" @click="clear">C</div>
    <div class="calc__btns-item special" @click="typeBrackets"><strong>( )</strong></div>
    <div class="calc__btns-item special" data-val="%" disabled><strong>%</strong></div>
