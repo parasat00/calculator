@@ -262,6 +262,9 @@ createApp({
     if(this.input !== '' && this.input.charAt(this.input.length -1) === ")") {
       this.typeOperator('*');
     }
+    if(this.input === '0') {
+      this.backspace();
+    }
     this.input += inp;
     this.output += out;
 
