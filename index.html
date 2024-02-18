@@ -20,7 +20,7 @@
   </div>
   <div class="calc__temp">{{ temp_output }}</div>
   <div class="calc__header">
-   <i :class="['fa fa-clock-o', { 'active' : history.length > 0 }]" aria-hidden="true" @click="display_history"></i>
+   <i :class="[show_history ? 'fa fa-calculator' : 'fa fa-clock-o', { 'active' : history.length > 0 }]" aria-hidden="true" @click="display_history"></i>
    <i class="fas fa-backspace special" @click="backspace"></i>
   </div>
 
@@ -39,7 +39,7 @@
 
    <div class="calc__btns-item c" @click="clear">C</div>
    <div class="calc__btns-item special" @click="typeBrackets"><strong>( )</strong></div>
-   <div class="calc__btns-item special" data-val="%" disabled><strong>%</strong></div>
+   <div class="calc__btns-item special unfinished" data-val="%"><strong>%</strong></div>
    <div class="calc__btns-item special" data-val="/" @click="typeOperation"><i class="fas fa-divide"></i></div>
    <div class="calc__btns-item" data-val="7" @click="type">7</div>
    <div class="calc__btns-item" data-val="8" @click="type">8</div>

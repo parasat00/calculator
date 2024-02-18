@@ -43,6 +43,9 @@ createApp({
   type(e) {
    val = e.target.dataset.val;
 
+  //  If you have only 0 as an argument, delete it:
+   if(this.num === "0") { this.backspace() }
+
    if(!this.num.includes('.')) {
      if(this.num.length < 15) {
      this.num += val;
@@ -63,6 +66,7 @@ createApp({
    this.temp_output_toggle();
   },
   typeOperator(val) {
+   last = this.input.charAt(this.input.length-1);
    this.output += this.num.length === 15 ? ' ' : '';
 
    if(val === '*') {
@@ -70,6 +74,9 @@ createApp({
    }
    else if(val === '/') {
     this.output += `<span class="special">÷</span>`;
+   }
+   else if(last === "(") {
+    this.output += val;
    }
    else {
     this.output += `<span class="special">${val}</span>`;
@@ -88,6 +95,12 @@ createApp({
 
    if("*/+-".includes(last)) {
     if(this.input.charAt(this.input.length-2) === "(" && "*/".includes(val)) { return }
+
+    if("+-".includes(this.output.charAt(this.output.length-1))) {
+      this.input = this.input.slice(0, -1) + val;
+      this.output = this.output.slice(0, -1) + val;
+      return;
+    }
     this.input = this.input.slice(0, -1);
     this.output = this.output.slice(0, -30);
    }
@@ -143,7 +156,7 @@ createApp({
     this.num += '0.';
     this.output += '0.';
    }
-   else if(this.input === '' || last === '(') {
+   else if(this.input === '' || last === '(' || this.num === '') {
     this.input += '0.';
     this.num += '0.';
     this.output += '0.';
@@ -155,7 +168,7 @@ createApp({
    }
   },
   equal() {
-   if(!this.temp_output) { return }
+   if(this.temp_output !== 0 && !this.temp_output) { return }
 
    temp = this.temp_output + '';
 
@@ -197,7 +210,8 @@ createApp({
       last = this.input.charAt(this.input.length - 1);
     }
     // if last element is operator and element before is not (
-    if("+-/*".includes(last) && this.input.charAt(this.input.length - 2) !== "(") {
+    // or last element is plus and before element is (
+    if(("+-/*".includes(last) && this.input.charAt(this.input.length - 2) !== "(") || (last === '+' && this.input.charAt(this.input.length - 2) === "(")) {
       this.bracketStack.push("(");
       this.input += "(-";
       this.output += "(-";
@@ -208,27 +222,23 @@ createApp({
         this.input = "(-" + this.input;
         this.output = "(-" + this.output;
       } 
-      else {
-        reverse_input=this.input.split("").reverse().join("");
-        beginning = reverse_input.match("[+-/*]").index;
-
-        if(this.input.slice(-beginning-2, -beginning) === "(-") {
-          temp_input = this.input;
-          this.input = temp_input.slice(0, -beginning-2) + temp_input.slice(-beginning);
-          this.output = this.output.slice(0, -beginning-2) + this.output.slice(-beginning);
-          this.bracketStack.pop();
-        }
-        else if(this.input.slice(-2) === "(-") {
-          this.input = this.input.slice(0, -2);
-          this.output = this.output.slice(0, -2);
+      else if(this.num !== '') {
+        if(this.input.slice(-this.num.length-2, -this.num.length) === '(-') {
+          this.input = this.input.slice(0, -this.num.length-2) + this.input.slice(-this.num.length);
+          this.output = this.output.slice(0, -this.num.length-2) + this.output.slice(-this.num.length);
           this.bracketStack.pop();
         }
         else {
           temp_input = this.input;
-          this.input = temp_input.slice(0, -beginning) + "(-" + temp_input.slice(-beginning);
-          this.output = this.output.slice(0, -beginning) + "(-" + this.output.slice(-beginning);
+          this.input = temp_input.slice(0, -this.num.length) + "(-" + temp_input.slice(-this.num.length);
+          this.output = this.output.slice(0, -this.num.length) + "(-" + this.output.slice(-this.num.length);
           this.bracketStack.push("(");
         }
+      }
+      else {
+        this.input = this.input.slice(0, -2);
+        this.output = this.output.slice(0, -2);
+        this.bracketStack.pop();
       }
     }
     this.temp_output_toggle();

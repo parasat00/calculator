@@ -97,6 +97,10 @@ body {
  font-size: 2.5rem;
  background-color: #308606;
 }
+.calc__btns-item.unfinished {
+ opacity: 0.5;
+ cursor: auto;
+}
 .special {
  color: var(--special-text);
 }
@@ -108,6 +112,7 @@ body {
  border-right: 1px solid var(--grey-text);
  text-align: end;
  transition: all 0.5s;
+ z-index: 2;
 }
 .calc__btns-history-clear {
  display: grid;
