@@ -136,6 +136,9 @@ body {
 .calc__btns-history-slide-item {
  margin-bottom: 15px;
 }
+.calc__btns-history-slide-item div {
+ cursor: pointer;
+}
 .calc__btns-history-slide-item-equation {
  margin-bottom: 10px;
 }

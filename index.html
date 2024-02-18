@@ -28,8 +28,15 @@
    <div class="calc__btns-history" v-show="show_history">
     <div class="calc__btns-history-slide" ref="history_box">
      <div class="calc__btns-history-slide-item" v-for="equation in history">
-      <div class="calc__btns-history-slide-item-equation" v-html="equation.input"></div>
-      <span class="calc__btns-history-slide-item-solution special">={{ equation.output }}</span>
+      <div 
+       class="calc__btns-history-slide-item-equation" 
+       v-html="equation.input" 
+       @click="useHistory(equation.input_in, equation.input)"
+      ></div>
+      <div 
+       class="calc__btns-history-slide-item-solution special"
+       @click="useHistory(equation.output, equation.output)"
+      >={{ equation.output }}</div>
      </div>
     </div>
     <div class="calc__btns-history-clear">

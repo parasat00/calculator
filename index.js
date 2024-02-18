@@ -123,7 +123,7 @@ createApp({
     this.num = this.num.slice(0, -1);
 
    }
-   else if(last === "-" && this.input.charAt(this.input.length-2) === "(") {
+   else if((last === "-" && this.input.charAt(this.input.length-2) === "(") || ("*/+-".includes(this.output.charAt(this.output.length - 1)))) {
     this.input = this.input.slice(0, -1);
     this.output = this.output.slice(0, -1);
    }
@@ -172,13 +172,15 @@ createApp({
 
    temp = this.temp_output + '';
 
-   history_item = { input : this.output, output : temp };
+   history_item = { input : this.output, input_in: this.input, output : temp };
    this.history.push(history_item);
 
    this.output = temp;
    this.input = temp;
    this.num = temp;
    this.temp_output = '';
+   this.show_history = false;
+   this.$refs.history_box.scrollTo(0, this.$refs.history_box.clientHeight);
   },
   typeBrackets() {
    last = this.input.charAt(this.input.length - 1);
@@ -249,13 +251,21 @@ createApp({
     setTimeout(this.show_history = false, 1000);
   },
   display_history(e) {
-    history_box = this.$refs.history_box;
-    history_box.scrollTop = history_box.scrollHeight;
     
     if(!e.target.className.includes("active")) { return }
     
     this.show_history = !this.show_history;
 
+    return;
+  },
+  useHistory(inp, out) {
+    if(this.input !== '' && this.input.charAt(this.input.length -1) === ")") {
+      this.typeOperator('*');
+    }
+    this.input += inp;
+    this.output += out;
+
+    this.temp_output_toggle();
     return;
   }
  }
